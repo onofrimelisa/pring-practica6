@@ -31,10 +31,10 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
         List<IngredientsWithCalories> caloriesPerIngredient = this.calculateCaloriesPerIngredient(food.getIngredients());
 
         return caloriesPerIngredient
-                .stream()
-                .mapToDouble(IngredientsWithCalories::getCalories)
-                .reduce(Double::sum)
-                .orElse(0);
+            .stream()
+            .mapToDouble(IngredientsWithCalories::getCalories)
+            .reduce(Double::sum)
+            .orElse(0);
     }
 
     @Override
