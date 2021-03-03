@@ -18,7 +18,7 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
     private ICaloriesCalculatorRepository caloriesCalculatorRepository;
 
     @Override
-    public ResponseDTO generateResponse(Food food) {
+    public ResponseDTO generateResponse(Food food) throws IngredientNotFoundException {
         ResponseDTO response = new ResponseDTO();
         response.setCaloriesPerIngredient(this.calculateCaloriesPerIngredient(food.getIngredients()));
         response.setTotalCalories(this.calculateTotalCalories(food));
@@ -27,7 +27,7 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
     }
 
     @Override
-    public Double calculateTotalCalories(Food food) {
+    public Double calculateTotalCalories(Food food) throws IngredientNotFoundException {
         List<IngredientsWithCalories> caloriesPerIngredient = this.calculateCaloriesPerIngredient(food.getIngredients());
 
         return caloriesPerIngredient
@@ -38,7 +38,7 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
     }
 
     @Override
-    public List<IngredientsWithCalories> calculateCaloriesPerIngredient(List<Ingredient> ingredients) {
+    public List<IngredientsWithCalories> calculateCaloriesPerIngredient(List<Ingredient> ingredients) throws IngredientNotFoundException {
         List<IngredientsWithCalories> list = new ArrayList<>();
 
         for (Ingredient ingredient : ingredients) {
@@ -58,7 +58,7 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
     }
 
     @Override
-    public Ingredient calculateIngredientWithMostCalories(List<Ingredient> ingredients) {
+    public Ingredient calculateIngredientWithMostCalories(List<Ingredient> ingredients) throws IngredientNotFoundException {
         List<IngredientsWithCalories> caloriesPerIngredient = this.calculateCaloriesPerIngredient(ingredients);
         IngredientsWithCalories ingredientWithCaloriesMax = this.caloriesCalculatorRepository.calculateIngredientWithMostCalories(caloriesPerIngredient);
 

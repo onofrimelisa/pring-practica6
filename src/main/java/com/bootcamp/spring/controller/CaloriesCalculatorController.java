@@ -1,5 +1,6 @@
 package com.bootcamp.spring.controller;
 
+import com.bootcamp.spring.exceptions.IngredientNotFoundException;
 import com.bootcamp.spring.interfaces.ICaloriesCalculatorService;
 import com.bootcamp.spring.dto.FoodDTO;
 import com.bootcamp.spring.dto.IngredientDTO;
@@ -17,7 +18,7 @@ public class CaloriesCalculatorController {
     private ICaloriesCalculatorService caloriesCalculatorService;
 
     @PostMapping
-    public ResponseDTO calculateCalories(@RequestBody FoodDTO foodDTO) {
+    public ResponseDTO calculateCalories(@RequestBody FoodDTO foodDTO) throws IngredientNotFoundException {
         Food food = new Food(foodDTO.getName());
 
         for (IngredientDTO ingredientDTO:
