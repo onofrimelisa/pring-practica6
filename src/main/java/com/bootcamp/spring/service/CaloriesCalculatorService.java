@@ -9,7 +9,7 @@ import com.bootcamp.spring.model.IngredientsWithCalories;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class CaloriesCalculatorService implements ICaloriesCalculatorService {
@@ -27,16 +27,43 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
 
     @Override
     public Double calculateTotalCalories(Food food) {
-        return this.caloriesCalculatorRepository.calculateTotalCalories(food);
+        List<IngredientsWithCalories> caloriesPerIngredient = this.calculateCaloriesPerIngredient(food.getIngredients());
+
+        return caloriesPerIngredient
+                .stream()
+                .mapToDouble(IngredientsWithCalories::getCalories)
+                .reduce(Double::sum)
+                .orElse(0);
     }
 
     @Override
     public List<IngredientsWithCalories> calculateCaloriesPerIngredient(List<Ingredient> ingredients) {
-        return this.caloriesCalculatorRepository.calculateCaloriesPerIngredient(ingredients);
+        List<IngredientsWithCalories> list = new ArrayList<>();
+
+        for (Ingredient ingredient : ingredients) {
+            Optional<IngredientsWithCalories> ingredientCalories = this.caloriesCalculatorRepository.searchIngredientByName(ingredient.getName());
+            if (ingredientCalories.isPresent()) {
+                IngredientsWithCalories newIngredient = new IngredientsWithCalories(
+                        ingredient.getName(),
+                        ((ingredientCalories.get().getCalories() * ingredient.getWeight()) / 100)
+                );
+                list.add(newIngredient);
+            }
+        }
+
+        return list;
     }
 
     @Override
     public Ingredient calculateIngredientWithMostCalories(List<Ingredient> ingredients) {
-        return this.caloriesCalculatorRepository.calculateIngredientWithMostCalories(ingredients);
+        List<IngredientsWithCalories> caloriesPerIngredient = this.calculateCaloriesPerIngredient(ingredients);
+        IngredientsWithCalories ingredientWithCaloriesMax = this.caloriesCalculatorRepository.calculateIngredientWithMostCalories(caloriesPerIngredient);
+
+        return ingredients
+            .stream()
+            .filter(ingredient -> ingredient.getName().toUpperCase(Locale.ROOT).equals(ingredientWithCaloriesMax.getName().toUpperCase()))
+            .findFirst()
+            .get();
+
     }
 }

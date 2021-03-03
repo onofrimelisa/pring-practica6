@@ -1,13 +1,12 @@
 package com.bootcamp.spring.interfaces;
 
-import com.bootcamp.spring.model.Food;
 import com.bootcamp.spring.model.Ingredient;
 import com.bootcamp.spring.model.IngredientsWithCalories;
 import java.util.List;
+import java.util.Optional;
 
 public interface ICaloriesCalculatorRepository {
     List<IngredientsWithCalories> loadDatabase();
-    Double calculateTotalCalories(Food food);
-    List<IngredientsWithCalories> calculateCaloriesPerIngredient(List<Ingredient> ingredients);
-    Ingredient calculateIngredientWithMostCalories(List<Ingredient> ingredients);
+    IngredientsWithCalories calculateIngredientWithMostCalories(List<IngredientsWithCalories> caloriesPerIngredient);
+    Optional<IngredientsWithCalories> searchIngredientByName(String name);
 }
