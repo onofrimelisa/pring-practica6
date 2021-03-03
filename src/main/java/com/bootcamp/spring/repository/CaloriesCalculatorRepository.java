@@ -1,8 +1,6 @@
 package com.bootcamp.spring.repository;
 
 import com.bootcamp.spring.interfaces.ICaloriesCalculatorRepository;
-import com.bootcamp.spring.model.Food;
-import com.bootcamp.spring.model.Ingredient;
 import com.bootcamp.spring.model.IngredientsWithCalories;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;

@@ -1,5 +1,6 @@
 package com.bootcamp.spring.service;
 
+import com.bootcamp.spring.exceptions.IngredientNotFoundException;
 import com.bootcamp.spring.interfaces.ICaloriesCalculatorRepository;
 import com.bootcamp.spring.interfaces.ICaloriesCalculatorService;
 import com.bootcamp.spring.dto.ResponseDTO;
@@ -48,6 +49,8 @@ public class CaloriesCalculatorService implements ICaloriesCalculatorService {
                         ((ingredientCalories.get().getCalories() * ingredient.getWeight()) / 100)
                 );
                 list.add(newIngredient);
+            }else{
+                throw new IngredientNotFoundException(ingredient.getName());
             }
         }
 
